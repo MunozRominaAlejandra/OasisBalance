@@ -3,11 +3,11 @@ Shader "Custom/AguaRio"
 {
     Properties
     {
-        [MainColor] _BaseColor("Color del agua", Color) = (0.035, 0.13, 0.095, 0.55)
+        [MainColor] _BaseColor("Color del agua", Color) = (0.025, 0.45, 0.55, 0.85)
 
-        _Smoothness("Suavidad de reflejos", Range(0, 1)) = 0.85
-        _SpecularStrength("Intensidad de reflejos", Range(0, 2)) = 0.35
-        _FresnelStrength("Brillo en bordes", Range(0, 1)) = 0.2
+        _Smoothness("Suavidad de reflejos", Range(0, 1)) = 0.95
+        _SpecularStrength("Intensidad de reflejos", Range(0, 2)) = 0.8
+        _FresnelStrength("Brillo en bordes", Range(0, 2)) = 0.9
     }
 
     SubShader
@@ -130,11 +130,14 @@ Shader "Custom/AguaRio"
 
                 // Resultado final
                 half3 finalColor =
-                    diffuse + specularColor + fresnelColor;
+                diffuse + specularColor + fresnelColor;
+
+                // Refuerzo de visibilidad en los bordes
+                finalColor += fresnelColor * 0.8;
 
                 return half4(
                     finalColor,
-                    saturate(_BaseColor.a)
+                    max(_BaseColor.a, 0.85)
                 );
             }
 

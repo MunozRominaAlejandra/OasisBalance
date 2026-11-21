@@ -33,7 +33,7 @@ MonoBehaviour:
     - line: '|   AndroidProfiler: 0'
     - line: '|   AndroidFilterTouchesWhenObscured: 0'
     - line: '|   AndroidEnableSustainedPerformanceMode: 0'
-    - line: '|   defaultScreenOrientation: 4'
+    - line: '|   defaultScreenOrientation: 3'
     - line: '|   targetDevice: 2'
     - line: '|   useOnDemandResources: 0'
     - line: '|   accelerometerFrequency: 60'
@@ -84,7 +84,7 @@ MonoBehaviour:
     - line: '|   iosShowActivityIndicatorOnLoading: -1'
     - line: '|   androidShowActivityIndicatorOnLoading: -1'
     - line: '|   iosUseCustomAppBackgroundBehavior: 0'
-    - line: '|   allowedAutorotateToPortrait: 1'
+    - line: '|   allowedAutorotateToPortrait: 0'
     - line: '|   allowedAutorotateToPortraitUpsideDown: 1'
     - line: '|   allowedAutorotateToLandscapeRight: 1'
     - line: '|   allowedAutorotateToLandscapeLeft: 1'
@@ -986,7 +986,7 @@ MonoBehaviour:
         m_ConnectProfiler: 0
         m_BuildWithDeepProfilingSupport: 0
         m_BuildWithCodeCoverage: 0
-        m_AllowDebugging: 0
+        m_AllowDebugging: 1
         m_WaitForManagedDebugger: 0
         m_ManagedDebuggerFixedPort: 0
         m_ExplicitNullChecks: 0

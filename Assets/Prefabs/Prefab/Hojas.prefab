@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 1864686472892062078}
   - component: {fileID: 9156338608833509572}
   - component: {fileID: 5969618543203603875}
-  - component: {fileID: 4150022624355920248}
+  - component: {fileID: 6773949879179101540}
+  - component: {fileID: 7860774323521486599}
   m_Layer: 0
   m_Name: Hojas
   m_TagString: Untagged
@@ -91,7 +92,28 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &4150022624355920248
+--- !u!65 &6773949879179101540
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9049455637399767356}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 8.766663, y: 1.0944266, z: 8.354504}
+  m_Center: {x: -0.080444336, y: 0.49615645, z: -0.11567116}
+--- !u!64 &7860774323521486599
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
