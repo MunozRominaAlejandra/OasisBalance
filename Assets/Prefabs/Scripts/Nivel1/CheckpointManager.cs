@@ -9,6 +9,7 @@ public class CheckpointManager : MonoBehaviour
 
     [Header("Respawn")]
     [SerializeField] private Transform startPoint;
+    [SerializeField] private Transform[] checkpointRespawnPoints;
     [SerializeField] private float respawnDelay = 3f;
 
     private Transform currentRespawnPoint;
@@ -18,6 +19,33 @@ public class CheckpointManager : MonoBehaviour
     private void Start()
     {
         currentRespawnPoint = startPoint;
+
+        int selectedCheckpoint = NivelManager.CheckpointSeleccionado;
+
+        if (checkpointRespawnPoints != null &&
+            selectedCheckpoint >= 0 &&
+            selectedCheckpoint < checkpointRespawnPoints.Length)
+        {
+            currentCheckpointIndex = selectedCheckpoint;
+            currentRespawnPoint = checkpointRespawnPoints[selectedCheckpoint];
+
+            if (playerTransform != null && currentRespawnPoint != null)
+            {
+                playerTransform.SetPositionAndRotation(
+                    currentRespawnPoint.position,
+                    currentRespawnPoint.rotation
+                );
+            }
+
+            if (EstadisticasManager.Instance != null)
+            {
+                EstadisticasManager.Instance.RegistrarCheckpoint(
+                    selectedCheckpoint
+                );
+            }
+
+            Physics.SyncTransforms();
+        }
     }
 
     public void ActivateCheckpoint(int index, Transform respawnPoint)
