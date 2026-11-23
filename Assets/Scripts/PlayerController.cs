@@ -11,13 +11,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float acceleration = 2.5f;
     [SerializeField] private float deceleration = 8f;
 
-    [Header("Giroscopio")]
-    [SerializeField] private float turnSensitivity = 1f;
-    [SerializeField] private float accelerometerTurnSpeed = 90f;
-    [SerializeField] private bool invertGyroscope = false;
-
     [Header("Sensibilidad")]
     [SerializeField] private float maxTiltAngle = 45f;
+    [SerializeField] private bool invertHorizontal = false;
     [SerializeField] private bool invertVertical = false;
 
     [Header("Filtro de temblor")]
@@ -36,7 +32,6 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody rb;
     private bool canMove;
-    private bool hasGyroscope;
     private Coroutine calibrationCoroutine;
 
     private Vector2 calibrationAngles;
@@ -45,29 +40,16 @@ public class PlayerController : MonoBehaviour
     private Vector2 stableInput;
     private Vector2 currentVelocity;
 
+    private float horizontalTimer;
     private float verticalTimer;
-    private float turnInput;
 
+    private bool horizontalActive;
     private bool verticalActive;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
         rb.interpolation = RigidbodyInterpolation.Interpolate;
-
-        hasGyroscope = SystemInfo.supportsGyroscope;
-
-        if (hasGyroscope)
-        {
-            Input.gyro.enabled = true;
-        }
-        else
-        {
-            Debug.LogWarning(
-                "Este dispositivo no tiene giroscopio. " +
-                "Se usará el acelerómetro para girar."
-            );
-        }
     }
 
     private void Start()
@@ -147,26 +129,24 @@ public class PlayerController : MonoBehaviour
             angles.x
         );
 
-        float roll = Mathf.DeltaAngle(
-            calibrationAngles.y,
-            angles.y
-        );
-
-        float vertical = Mathf.Clamp(
-            pitch / maxTiltAngle, -1f, 1f
-        );
-
-        turnInput = Mathf.Clamp(
+        float horizontal = Mathf.Clamp(
             Mathf.DeltaAngle(calibrationAngles.y, angles.y)
                 / maxTiltAngle,
             -1f,
             1f
         );
 
+        float vertical = Mathf.Clamp(
+            pitch / maxTiltAngle, -1f, 1f
+        );
+
+        if (invertHorizontal)
+            horizontal *= -1f;
+
         if (invertVertical)
             vertical *= -1f;
 
-        rawInput = new Vector2(0f, vertical);
+        rawInput = new Vector2(horizontal, vertical);
     }
 
     private Vector2 GetAccelerometerAngles()
@@ -201,6 +181,12 @@ public class PlayerController : MonoBehaviour
 
     private void DetectIntent()
     {
+        horizontalActive = DetectAxis(
+            filteredInput.x,
+            horizontalActive,
+            ref horizontalTimer
+        );
+
         verticalActive = DetectAxis(
             filteredInput.y,
             verticalActive,
@@ -246,12 +232,16 @@ public class PlayerController : MonoBehaviour
 
     private void CalculateMovement()
     {
+        float horizontal = horizontalActive
+            ? ApplyResponseCurve(filteredInput.x)
+            : 0f;
+
         float vertical = verticalActive
             ? ApplyResponseCurve(filteredInput.y)
             : 0f;
 
         stableInput = Vector2.ClampMagnitude(
-            new Vector2(0f, vertical),
+            new Vector2(horizontal, vertical),
             1f
         );
     }
@@ -289,30 +279,10 @@ public class PlayerController : MonoBehaviour
         );
 
         Vector3 movement = new Vector3(
-            0f,
+            currentVelocity.x,
             0f,
             currentVelocity.y
         );
-
-        if (Mathf.Abs(currentVelocity.y) > 0.01f)
-        {
-            float turn = hasGyroscope
-                ? Input.gyro.rotationRateUnbiased.y * turnSensitivity
-                : turnInput * accelerometerTurnSpeed;
-
-            if (invertGyroscope)
-                turn *= -1f;
-
-            Quaternion rotation = Quaternion.Euler(
-                0f,
-                turn * Time.fixedDeltaTime,
-                0f
-            );
-
-            rb.MoveRotation(rb.rotation * rotation);
-        }
-
-        movement = rb.rotation * movement;
 
         rb.MovePosition(
             rb.position + movement * Time.fixedDeltaTime
@@ -327,10 +297,11 @@ public class PlayerController : MonoBehaviour
         filteredInput = Vector2.zero;
         stableInput = Vector2.zero;
         currentVelocity = Vector2.zero;
-        turnInput = 0f;
 
+        horizontalTimer = 0f;
         verticalTimer = 0f;
 
+        horizontalActive = false;
         verticalActive = false;
 
         Debug.Log("Acelerómetro recalibrado.");
@@ -342,10 +313,11 @@ public class PlayerController : MonoBehaviour
         filteredInput = Vector2.zero;
         stableInput = Vector2.zero;
         currentVelocity = Vector2.zero;
-        turnInput = 0f;
 
+        horizontalTimer = 0f;
         verticalTimer = 0f;
 
+        horizontalActive = false;
         verticalActive = false;
     }
 }

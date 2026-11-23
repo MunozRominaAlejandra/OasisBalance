@@ -61,11 +61,18 @@ public class MenuManager : MonoBehaviour
     // BOTÓN JUGAR
     public void Jugar()
     {
+        NivelManager.SeleccionarInicio();
         SceneManager.LoadScene("Nivel1");
+    }
+
+    // BOTÓN SALIR
+    public void SalirDelJuego()
+    {
+        Application.Quit();
     }
     #endregion
 
-    #region CONTROL DE VOLUMEN
+        #region CONTROL DE VOLUMEN
     public void CambiarVolumen(float valor)
     {
         AudioListener.volume = valor;
