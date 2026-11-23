@@ -28,6 +28,9 @@ public class CheckpointManager : MonoBehaviour
         currentCheckpointIndex = index;
         currentRespawnPoint = respawnPoint;
 
+        if (EstadisticasManager.Instance != null)
+            EstadisticasManager.Instance.RegistrarCheckpoint(index);
+
         Debug.Log("Checkpoint activado: " + (index + 1));
     }
     public int GetCurrentCheckpoint()
@@ -38,6 +41,9 @@ public class CheckpointManager : MonoBehaviour
     {
         if (isRespawning)
             return;
+
+        if (EstadisticasManager.Instance != null)
+            EstadisticasManager.Instance.RegistrarIntento();
 
         StartCoroutine(RespawnPlayer());
     }
