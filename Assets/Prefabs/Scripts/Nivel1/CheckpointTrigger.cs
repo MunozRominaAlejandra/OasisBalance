@@ -12,6 +12,9 @@ public class CheckpointTrigger : MonoBehaviour
     [Header("Punto de reaparición")]
     [SerializeField] private Transform respawnPoint;
 
+    [Header("Sonido")]
+    [SerializeField] private AudioClip checkpointSound;
+
     private bool activated;
 
     private void OnTriggerEnter(Collider other)
@@ -37,6 +40,15 @@ public class CheckpointTrigger : MonoBehaviour
             previousCheckpoint)
         {
             activated = true;
+
+            if (checkpointSound != null)
+            {
+                AudioSource.PlayClipAtPoint(
+                    checkpointSound,
+                    transform.position
+                );
+            }
+
             Debug.Log("¡Checkpoint activado!");
         }
     }

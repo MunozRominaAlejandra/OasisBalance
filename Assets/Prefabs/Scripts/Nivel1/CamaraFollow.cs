@@ -14,6 +14,8 @@ public class CameraFollow : MonoBehaviour
     [Header("Orientación")]
     [SerializeField] private float lookHeight = 1.2f;
     [SerializeField] private bool followPlayerRotation = true;
+    [Range(0f, 1f)]
+    [SerializeField] private float rotationFollowAmount = 0.35f;
     [SerializeField] private float rotationSpeed = 5f;
 
     private void LateUpdate()
@@ -21,9 +23,19 @@ public class CameraFollow : MonoBehaviour
         if (player == null) return;
 
         // Calcular posición de seguimiento
-        Vector3 desiredOffset = followPlayerRotation
-            ? player.rotation * offset
-            : offset;
+        Vector3 desiredOffset = offset;
+
+        if (followPlayerRotation)
+        {
+            float playerYaw = player.eulerAngles.y;
+            float limitedYaw = playerYaw * rotationFollowAmount;
+
+            desiredOffset = Quaternion.Euler(
+                0f,
+                limitedYaw,
+                0f
+            ) * offset;
+        }
 
         Vector3 desiredPosition = player.position + desiredOffset;
 

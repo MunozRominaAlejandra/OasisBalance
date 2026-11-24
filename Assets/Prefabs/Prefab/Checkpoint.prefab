@@ -130,6 +130,7 @@ MonoBehaviour:
   checkpointManager: {fileID: 0}
   checkpointIndex: 0
   respawnPoint: {fileID: 0}
+  checkpointSound: {fileID: 8300000, guid: 26afbac48127e4f45a5383668f8f06ce, type: 3}
 --- !u!64 &5632476511360396241
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -163,7 +164,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 24300002, guid: 4dfd74b93e7492240bf7098ce5e56e09, type: 2}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 8300000, guid: 26afbac48127e4f45a5383668f8f06ce, type: 3}
+  m_Resource: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
