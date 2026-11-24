@@ -3671,8 +3671,8 @@ MonoBehaviour:
   offset: {x: 0, y: 1, z: -1}
   smoothSpeed: 4
   lookHeight: 1.5
-  followPlayerRotation: 0
-  rotationSpeed: 0
+  followPlayerRotation: 1
+  rotationSpeed: 3
 --- !u!82 &1280804666
 AudioSource:
   m_ObjectHideFlags: 0
